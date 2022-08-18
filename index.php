@@ -28,12 +28,19 @@
     <?php
     }
 
-            if(isset($_GET['entree'])){
+            if(isset($_GET['entree']) || isset($_GET['entreeEnr'])){
+                if(isset($_GET['entree'])){
             $user = new user($_POST['mail'], $_POST['password']);
             $manager = new manager($db);
             $user = $manager->read('user',$_POST['mail']);
+                }
             if (!empty($user)) {
                 echo 'Bonjour' .' '. $user[0]['prenom'] .' '.$user[0]['nom'];
+                if ($user[0]['admin'] == 1){
+                    ?>
+                    <a type="button" href="asset/include/ajouterPizza.php">Ajouter pizza</a>
+                    <?php
+                }
                 $pizza = $manager->read('pizza',"");
                 $ingredients = $manager->read('ingredients',"");
                 $relation = $manager->read('relation',"");
@@ -45,17 +52,8 @@
                     }
                 }
                 ?>
-                <!-- <div>
-                    <img src="./asset/image/<?php echo $pizza[0]['img'] ?>">
-                    <h4>pizza <?php echo $pizza[0]['nom'] ?></h4>
-                    <h5>prix : <?php echo $pizza[0]['prix'] ?> €</h5>
-                    <h6>ingredients :</h6>
-                    <h6><?php echo $ingredients[0]['ingredient'] ?></h6>
-                    <h6><?php echo $ingredients[1]['ingredient'] ?></h6>
-                    <h6><?php echo $ingredients[2]['ingredient'] ?></h6>
-                </div> -->
                 <?php
-} else {
+} elseif (!isset($_GET['entreeEnr'])) {
     ?> <h1>Pas d'utilisateur</h1>
     <form action="index.php?enregistrement" method="POST">
             <label  class="col-form-label col-form-label-sm mt-4" for="mail">mail</label>
@@ -75,18 +73,19 @@
                 $manager = new manager($db);
                 //$manager -> create('user',$_POST['mail'], $_POST['password'], $_POST['nom'], $_POST['prenom']);
                 $sql = $db -> prepare("INSERT INTO `user` 
-                (`nom`, `prenom`, `mail`, `password`) 
+                (`nom`, `prenom`, `mail`, `password`, `admin`) 
                 VALUES 
-                (:nom, :prenom, :mail, :password)");
+                (:nom, :prenom, :mail, :password, :admin)");
 
                 //$sql -> bindValue(":id", $role->getId(),PDO::PARAM_INT);
                 $sql -> bindValue(":nom", $_POST['nom'], PDO::PARAM_STR);
                 $sql -> bindValue(":prenom", $_POST['prenom'], PDO::PARAM_STR);
                 $sql -> bindValue(":mail", $_POST['mail'], PDO::PARAM_STR);
                 $sql -> bindValue(":password", $_POST['password'], PDO::PARAM_STR);
+                $sql -> bindValue(":admin", 0, PDO::PARAM_BOOL);
 
                 $sql -> execute();
-                header("location:index.php?entree"); 
+                header("location:index.php?entreeEnr"); 
             }
     ?>
     
