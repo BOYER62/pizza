@@ -1,6 +1,6 @@
 <?php
-include_once './objet/pizza.php';
-include_once './objet/user.php';
+//include_once './objet/pizza.php';
+//include_once './objet/user.php';
 
 class manager {
 

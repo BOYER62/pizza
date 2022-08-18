@@ -16,7 +16,7 @@
         include_once './objet/manager.php';
         include_once './asset/function/affichePizza.php';
     
-        if(!isset($_GET['entree']) and !isset($_GET['enregistrement'])){
+        if(!isset($_GET['entree']) and !isset($_GET['enregistrement']) and !isset($_GET['ajouter'])){
     ?>
         <form action="index.php?entree" method="POST">
             <label  class="col-form-label col-form-label-sm mt-4" for="mail">mail</label>
@@ -87,6 +87,7 @@
                 $sql -> execute();
                 header("location:index.php?entreeEnr"); 
             }
+            var_dump($_POST);
     ?>
     
 </body>
