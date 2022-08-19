@@ -1,9 +1,9 @@
 <?php
 
-$host = "localhost";
-$dbname = "pizza";
-$login = "Olivier";
-$mdp = "10091975";
+$host = "remotemysql.com";
+$dbname = "EcvyK8iUAN";
+$login = "EcvyK8iUAN";
+$mdp = "u06rt2TpO7";
 
 /**
  * try connection
