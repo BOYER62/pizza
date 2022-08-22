@@ -1,5 +1,6 @@
 <?php
 //include_once './objet/pizza.php';
+//include_once './objet/relation.php';
 //include_once './objet/user.php';
 
 class manager {
@@ -23,37 +24,51 @@ class manager {
 
     // Methods
     //Create
-    public function create($role, $mail, $password, $nomUser, $prenom, ){
-        switch ($role) {
+    public function create($role) { //, $mail, $password, $nomUser, $prenom, ){
+        switch (get_class($role)) {
             case 'user' :
                 var_dump($role);
                 $sql = $this -> bdd -> prepare("INSERT INTO `user` 
-                (`nom`, `prenom`, `mail`, `password`) 
+                (`nom`, `prenom`, `mail`, `password`, `admin`) 
                 VALUES 
-                (:nom, :prenom, :mail, :password)");
+                (:nom, :prenom, :mail, :password, :admin)");
 
                 //$sql -> bindValue(":id", $role->getId(),PDO::PARAM_INT);
-                $sql -> bindValue(":nom", $nomUser->getNomUser(), PDO::PARAM_STR);
-                $sql -> bindValue(":prenom", $prenom->getPrenom(), PDO::PARAM_STR);
-                $sql -> bindValue(":mail", $mail-> getMail(), PDO::PARAM_STR);
-                $sql -> bindValue(":password", $password-> getPassword(), PDO::PARAM_STR);
+                $sql -> bindValue(":nom", $role->getNomUser(), PDO::PARAM_STR);
+                $sql -> bindValue(":prenom", $role->getPrenom(), PDO::PARAM_STR);
+                $sql -> bindValue(":mail", $role-> getMail(), PDO::PARAM_STR);
+                $sql -> bindValue(":password", $role-> getPassword(), PDO::PARAM_STR);
+                $sql -> bindValue(":admin", $role->getAdmin(), PDO::PARAM_INT);
 
                 $sql -> execute();
                 break;
 
             case 'pizza' :
                 $sql = $this -> bdd -> prepare("INSERT INTO `pizza` 
-                (`base`, `nom`) 
+                (`base`, `nom`, `prix`, `img`) 
                 VALUES 
-                (:base, :nom)");
-
+                (:base, :nom, :prix, :img)");
+                echo $role->getBase();
                 //$sql -> bindValue(":id", $player->getId(),PDO::PARAM_INT);
                 $sql -> bindValue(":base", $role->getBase(), PDO::PARAM_STR);
                 $sql -> bindValue(":nom", $role->getNom(), PDO::PARAM_STR);
-        
+                $sql -> bindValue(":prix", $role->getPrix(), PDO::PARAM_INT);
+                $sql -> bindValue(":img", $role->getImg(), PDO::PARAM_STR);
                 $sql -> execute();
                 break;
-            
+
+            case 'relation' :
+                $sql = $this -> bdd -> prepare("INSERT INTO `relantionpizzaingredients`
+                (`id_pizza`, `id_ingredients`)
+                VALUES
+                (:idPizza, :idIngredients)");
+                
+                $sql -> bindValue(":idPizza", $role->getRelationPizza(),PDO::PARAM_STR);
+                $sql -> bindValue(":idIngredients", $role->getRelationIngredient(),PDO::PARAM_STR);
+                
+                $sql -> execute();
+                break;
+
             case 'default' :
                 break;
         }

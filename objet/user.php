@@ -7,16 +7,18 @@ class user {
     private $prenom;
     private $mail;
     private $password;
+    private $admin;
 
 
     //constructor
-    public function __construct($mail = "Olivier.Olivier@gmail.com", $password = "$1$", $nomUser="", $prenom="")
+    public function __construct($mail = "Olivier.Olivier@gmail.com", $password = "$1$", $nomUser="", $prenom="", $admin=0)
     {
         // $this -> setId($id);
         $this -> setMail($mail);
         $this -> setPassword($password);
         $this -> setNomUser($nomUser);
         $this -> setPrenom($prenom);
+        $this -> setAdmin($admin);
     }
 
     //getter
@@ -40,6 +42,10 @@ class user {
     {
         return $this->password;
     }
+    public function getAdmin()
+    {
+        return $this->admin;
+    }
 
     //setter
     public function setId($id)
@@ -61,5 +67,9 @@ class user {
     public function setPassword($password)
     {
         $this -> password = $password;
+    }
+    public function setAdmin($admin)
+    {
+        $this -> admin = $admin;
     }
 }

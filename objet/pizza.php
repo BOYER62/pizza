@@ -6,15 +6,17 @@ class pizza {
     private $base;
     private $nom;
     private $prix;
+    private $img;
 
 
     //constructor
-    public function __construct($base = "tomate", $nom = "reine", $prix = 10)
+    public function __construct($base = "tomate", $nom = "reine", $prix = 10, $img ="default.jpg")
     {
         // $this -> setId($id);
         $this -> setBase($base);
         $this -> setNom($nom);
         $this -> setPrix($prix);
+        $this -> setImg($img);
     }
 
     //getter
@@ -35,6 +37,10 @@ class pizza {
     {
         return $this->prix;
     }
+    public function getImg()
+    {
+        return $this->img;
+    }
 
     //setter
     public function setId($id)
@@ -52,5 +58,9 @@ class pizza {
     public function setPrix($prix)
     {
         $this -> prix = $prix;
+    }
+    public function setImg($img)
+    {
+        $this -> img = $img;
     }
 }

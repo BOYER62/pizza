@@ -12,6 +12,7 @@
 
         include_once './asset/bdd.php';
         include_once './objet/pizza.php';
+        include_once './objet/relation.php';
         include_once './objet/user.php';
         include_once './objet/manager.php';
         include_once './asset/function/affichePizza.php';
@@ -35,12 +36,16 @@
             $user = $manager->read('user',$_POST['mail']);
                 }
             if (!empty($user)) {
+                if ($user[0]['password'] != $_POST['password']){
+                    header("location:index.php");
+                }
                 echo 'Bonjour' .' '. $user[0]['prenom'] .' '.$user[0]['nom'];
                 if ($user[0]['admin'] == 1){
                     ?>
                     <a type="button" href="asset/include/ajouterPizza.php">Ajouter pizza</a>
                     <?php
                 }
+            
                 $pizza = $manager->read('pizza',"");
                 $ingredients = $manager->read('ingredients',"");
                 $relation = $manager->read('relation',"");
@@ -69,25 +74,32 @@
 }
             }
             if(isset($_GET['enregistrement'])){
-                //$user = new user(12, $_POST['mail'], $_POST['password'], $_POST['nom'], $_POST['prenom']);
+                $user = new user($_POST['mail'], $_POST['password'], $_POST['nom'], $_POST['prenom'],0);
                 $manager = new manager($db);
-                //$manager -> create('user',$_POST['mail'], $_POST['password'], $_POST['nom'], $_POST['prenom']);
-                $sql = $db -> prepare("INSERT INTO `user` 
-                (`nom`, `prenom`, `mail`, `password`, `admin`) 
-                VALUES 
-                (:nom, :prenom, :mail, :password, :admin)");
-
-                //$sql -> bindValue(":id", $role->getId(),PDO::PARAM_INT);
-                $sql -> bindValue(":nom", $_POST['nom'], PDO::PARAM_STR);
-                $sql -> bindValue(":prenom", $_POST['prenom'], PDO::PARAM_STR);
-                $sql -> bindValue(":mail", $_POST['mail'], PDO::PARAM_STR);
-                $sql -> bindValue(":password", $_POST['password'], PDO::PARAM_STR);
-                $sql -> bindValue(":admin", 0, PDO::PARAM_BOOL);
-
-                $sql -> execute();
+                $manager -> create($user);
+                
                 header("location:index.php?entreeEnr"); 
             }
-            var_dump($_POST);
+            if(isset($_GET['ajouter'])){
+                var_dump($_POST);
+                $pizza = new pizza($_POST['base'], $_POST['nom'], $_POST['prix'], $_POST['img']);
+                $manager = new manager($db);
+                $manager -> create($pizza);
+                $pizza = $manager->read('pizza',"");
+                $idPizza = $pizza[(count($pizza))-1]['id'];
+                array_pop($_POST);
+                array_splice($_POST,0,4);
+                print_r($_POST);   
+                $i = 1;
+                $max = count($_POST);
+                var_dump($i);
+                while ($i <= $max){
+                $relation = new relation($idPizza, $_POST['ingredients'.$i]);
+                //$manager = new manager($db);
+                $manager -> create($relation);
+                $i++;
+                }
+            }
     ?>
     
 </body>

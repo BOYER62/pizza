@@ -23,7 +23,7 @@
             foreach($ingredients as $key => $value){
                 ?>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="<?php echo $value['ingredient']; ?>" id="ingredients<?php echo $value['id']; ?>" name="ingredients<?php echo $value['id']; ?>">
+        <input class="form-check-input" type="checkbox" value="<?php echo $value['id']; ?>" id="ingredients<?php echo $value['id']; ?>" name="ingredients<?php echo $value['id']; ?>">
         <label class="form-check-label" for="ingredients">
                 <?php echo $value['ingredient']; ?>
         </label>
